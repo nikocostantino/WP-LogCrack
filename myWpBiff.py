@@ -45,8 +45,10 @@ def main(
             help=f"Vulnerable server ID"
         )):
     # validate_server(server)
-    # code = input("code:")
+    code = input("code:")
+    login("http://192.168.43.210/wordpress/wp-login.php",code)
 
+'''
     pool = Pool()
     result1 = pool.apply_async(bruteforce, [server, 0, 333333])  # evaluate "solve1(A)" asynchronously
     result2 = pool.apply_async(bruteforce, [server, 333331, 666666])  # evaluate "solve2(B)" asynchronously
@@ -54,7 +56,7 @@ def main(
     answer1 = result1.get(timeout=None)
     answer2 = result2.get(timeout=None)
     answer3 = result3.get(timeout=None)
-
+'''
 
 def run():
     try:
