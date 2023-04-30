@@ -2,7 +2,6 @@
 from requests import Session
 import typer
 from rich.console import Console
-from multiprocessing import Pool
 
 console = Console()
 app = typer.Typer()
