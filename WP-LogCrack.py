@@ -88,6 +88,7 @@ def wpbiff(timestamp, server, username, password):
 
     process = True
     total_cont = 0
+    error = False
     with Progress() as progress:
         task = progress.add_task("[bold yellow]Discovering token...", total=999999)
         while process:
@@ -95,7 +96,7 @@ def wpbiff(timestamp, server, username, password):
             output2 = p2.stderr.read1().strip().decode("utf8")
             output3 = p3.stderr.read1().strip().decode("utf8")
 
-            if "Token: " in output1 and int(output1.split(" ")[1]) > 0 and int(output2.split(" ")[1]) > 554300 and int(
+            if "Token: " in output1 and int(output1.split(" ")[1]) > 0 and int(output2.split(" ")[1]) > 333333 and int(
                     output3.split(" ")[1]) > 666666:
                 cont1 = int(output1.split(" ")[1])
                 cont2 = int(output2.split(" ")[1]) - 333333
@@ -110,8 +111,7 @@ def wpbiff(timestamp, server, username, password):
                     ("Traceback (most recent call last):" in output2 or p2.poll() is not None) and \
                     ("Traceback (most recent call last):" in output3 or p3.poll() is not None):
                 process = False
-                console.print("Error wpbiff: Remote server did not respond. Is it down?",
-                              style="bold red underline")
+                error = True
 
             if "100%" in output1:
                 progress.update(task_id=task, description="[bold green]Token found", advance=999999)
@@ -127,6 +127,9 @@ def wpbiff(timestamp, server, username, password):
                 progress.update(task_id=task, description="[bold green]Token found", advance=999999)
                 print(p3.stdout.read().strip().decode("utf8").split("Great Success!")[1])
                 process = False
+
+    if error:
+        console.log(f"[red bold]WPbiff Error:[/red bold] Remote server did not respond. Is it down?")
 
     p1.terminate()
     p2.terminate()

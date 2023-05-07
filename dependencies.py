@@ -25,6 +25,10 @@ def checkDependencies():
             f"[red bold]Error:[/red bold] Wpbiff not present, install it with the command: pip install wpbiff")
         problems = True
 
+    return not problems
+
+
+'''
     p = subprocess.Popen(["pip3", "show", "typer"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()
     if "not found" in str(p):
         console.log(
@@ -56,8 +60,7 @@ def checkDependencies():
         console.log(
             f"[red bold]Error:[/red bold] Pexpect not present, install it with the command: pip3 install pexpect")
         problems = True
-
-    return not problems
+'''
 
 
 def checkServer(server):
