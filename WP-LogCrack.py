@@ -64,7 +64,7 @@ def delorean(timestamp, server, username, password):
     while not p.eof():
         str_line = str(p.readline())
         if "OSError: [Errno 98] Address already in use" in str_line:
-            console.print("Error: Delorean already started elsewhere!", style="bold red underline")
+            console.print("Error: Delorean already Started elsewhere!", style="bold red underline")
             break
 
         if "Sent to" in str_line:
