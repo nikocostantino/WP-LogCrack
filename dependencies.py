@@ -3,6 +3,8 @@ import subprocess
 from rich.console import Console
 import requests
 
+from utility import is_valid_wp_login_url
+
 console = Console()
 
 
@@ -64,6 +66,9 @@ def checkDependencies():
 
 
 def checkServer(server):
+    if not is_valid_wp_login_url(server):
+        console.log(f"[red bold]URL {server} is not valid!")
+        return False
     error = False
     try:
         requests.get(f"{server}")

@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d932415-7113-4722-82bd-31422da39708" name="Changes" comment="fix readme commit">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="7d932415-7113-4722-82bd-31422da39708" name="Changes" comment="starting with graphical interface">
+      <change afterPath="$PROJECT_DIR$/utility.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/WP-LogCrack.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WP-LogCrack.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WP-LogCrack.py" beforeDir="false" afterPath="$PROJECT_DIR$/WP-LogCrack.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graphical.py" beforeDir="false" afterPath="$PROJECT_DIR$/graphical.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,14 +40,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/niko/PycharmProjects/WP-LogCrack&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/niko/PycharmProjects/WP-LogCrack/graphical.py"
   }
-}</component>
-  <component name="RunManager" selected="Python.WP-LogCrack">
+}]]></component>
+  <component name="RunManager" selected="Python.graphical">
     <configuration name="WP-LogCrack" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="WP-LogCrack" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -86,6 +90,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="graphical" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WP-LogCrack" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/graphical.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="myWpBiff" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WP-LogCrack" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -107,8 +132,31 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="prova" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WP-LogCrack" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/prova.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.graphical" />
+        <item itemvalue="Python.prova" />
         <item itemvalue="Python.dependencies" />
         <item itemvalue="Python.myWpBiff" />
       </list>
@@ -172,7 +220,42 @@
       <option name="project" value="LOCAL" />
       <updated>1683053409577</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fix readme commit">
+      <created>1683444819483</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683444819483</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fix readme commit">
+      <created>1683444879410</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683444879410</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fix readme.md">
+      <created>1683445750224</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1683445750224</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fix bug">
+      <created>1683560309817</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1683560309817</updated>
+    </task>
+    <task id="LOCAL-00012" summary="starting with graphical interface">
+      <created>1683744307879</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683744307879</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -194,17 +277,9 @@
     <MESSAGE value="good commit" />
     <MESSAGE value="add feature commit" />
     <MESSAGE value="fix readme commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix readme commit" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/WP-LogCrack.py</url>
-          <line>50</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="fix readme.md" />
+    <MESSAGE value="fix bug" />
+    <MESSAGE value="starting with graphical interface" />
+    <option name="LAST_COMMIT_MESSAGE" value="starting with graphical interface" />
   </component>
 </project>
