@@ -2,7 +2,6 @@
 import shlex
 import signal
 import subprocess
-
 import typer
 from requests import Session
 from rich.console import Console
@@ -23,7 +22,7 @@ def ettercap(timestamp, server, username, password):
     ip = input("Enter the IP address of the vulnerable server: ")
     # ip = "192.168.43.131"
     if not is_valid_ip_address(ip):
-        console.log(f"[red bold]Error:[/red bold] ip address is not syntactically valid")
+        console.log(f"[red bold]Error:[/red bold] IP address is not syntactically valid")
     elif not is_pingable(ip):
         console.log(f"[red bold]Error:[/red bold] IP address is unreachable")
     else:
@@ -168,7 +167,7 @@ def run():
     try:
         typer.run(main)
     except Exception as e:
-        console.print(f"[red bold]Error:[/red bold] {e}")
+        console.log(f"[red bold]Error:[/red bold] {e}")
 
 
 if __name__ == "__main__":

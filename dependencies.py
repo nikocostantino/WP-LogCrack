@@ -30,41 +30,6 @@ def checkDependencies():
     return not problems
 
 
-'''
-    p = subprocess.Popen(["pip3", "show", "typer"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()
-    if "not found" in str(p):
-        console.log(
-            f"[red bold]Error:[/red bold] Typer not present, install it with the command: pip3 install typer")
-        problems = True
-
-    p = subprocess.Popen(["pip3", "show", "rich"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()
-    if "not found" in str(p):
-        console.log(f"[red bold]Error:[/red bold] Rich not present, install it with the command: pip3 install rich")
-        problems = True
-
-    p = subprocess.Popen(["pip3", "show", "pyfiglet"], stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT).communicate()
-    if "not found" in str(p):
-        console.log(
-            f"[red bold]Error:[/red bold] Pyfiglet not present, install it with the command: pip3 install pyfiglet")
-        problems = True
-
-    p = subprocess.Popen(["pip3", "show", "termcolor"], stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT).communicate()
-    if "not found" in str(p):
-        console.log(
-            f"[red bold]Error:[/red bold] Termcolor not present, install it with the command: pip3 install termcolor")
-        problems = True
-
-    p = subprocess.Popen(["pip3", "show", "pexpect"], stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT).communicate()
-    if "not found" in str(p):
-        console.log(
-            f"[red bold]Error:[/red bold] Pexpect not present, install it with the command: pip3 install pexpect")
-        problems = True
-'''
-
-
 def checkServer(server):
     if not is_valid_wp_login_url(server):
         console.log(f"[red bold]URL {server} is not valid!")

@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d932415-7113-4722-82bd-31422da39708" name="Changes" comment="add second page and class utility, must fix utility with function ettercap, wpbiff etc.">
+    <list default="true" id="7d932415-7113-4722-82bd-31422da39708" name="Changes" comment="added some little things, and some more ettercap controls">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WP-LogCrack.py" beforeDir="false" afterPath="$PROJECT_DIR$/WP-LogCrack.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graphical.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,11 +40,12 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/niko/PycharmProjects/WP-LogCrack/files&quot;
+    &quot;last_opened_file_path&quot;: &quot;/home/niko/PycharmProjects/WP-LogCrack&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/files" />
     </key>
   </component>
@@ -180,8 +179,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.prova" />
-        <item itemvalue="Python.comm" />
         <item itemvalue="Python.graphical" />
+        <item itemvalue="Python.comm" />
         <item itemvalue="Python.dependencies" />
         <item itemvalue="Python.myWpBiff" />
       </list>
@@ -287,7 +286,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683968303384</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="added some little things, and some more ettercap controls">
+      <created>1684071803667</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1684071803667</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -313,6 +319,7 @@
     <MESSAGE value="fix bug" />
     <MESSAGE value="starting with graphical interface" />
     <MESSAGE value="add second page and class utility, must fix utility with function ettercap, wpbiff etc." />
-    <option name="LAST_COMMIT_MESSAGE" value="add second page and class utility, must fix utility with function ettercap, wpbiff etc." />
+    <MESSAGE value="added some little things, and some more ettercap controls" />
+    <option name="LAST_COMMIT_MESSAGE" value="added some little things, and some more ettercap controls" />
   </component>
 </project>
